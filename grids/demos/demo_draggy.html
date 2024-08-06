@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+    /* Preventing Flash Of Undefined Custom Elements */
+    body {
+      opacity: 0;
+      background-color: rgb(64, 64, 64);
+      color: rgb(192,192,192);
+    }
+
+    body.ready {
+      opacity: 1;
+      transition: .125s opacity;
+    }
+
+    canvas {
+      border: 5px solid black;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    draggy-list .item {
+      color: initial;
+    }
+  </style>
+  </head>
+<body>
+  <script type="module">
+    import {Labels} from "../src/labels.js";
+    import {Draggy} from "../src/draggy.js";
+    Labels.install(Labels, window);
+    Draggy.install(Draggy, window);
+  </script>
+  <div>
+    <!-- <My-Labels id="my-labels"></My-Labels> -->
+    <div style="display:flex; justify-content: space-evenly;">
+      <div id="events" style="font-family: monospace; flex-basis: 75%; white-space: pre-wrap; min-width:10em;min-height:5em"></div>
+      <draggy-list style="font-family: sans-serif"></draggy-list>
+    </div>
+  </div>
+  <script type="module">
+    import {Draggy} from "../src/draggy.js";
+    import {stringifyModerate} from "../src/util.js";
+// Preventing Flash Of Undefined Custom Elements
+    Promise.allSettled([
+    customElements.whenDefined('my-labels'),
+    customElements.whenDefined('draggy-list'),
+  ]).then(() => {
+    document.body.classList.add('ready')
+    const draggy = document.querySelector('draggy-list');
+    draggy.addItem("a");
+    draggy.addItem("b");
+    draggy.addItem("c");
+    draggy.addItem("d");
+    draggy.addItem("e");
+    console.log(draggy.order);
+  });
+  const draggy = document.querySelector('draggy-list');
+  const events = document.querySelector('#events');
+  const eventTypes = [
+    'dragstart',
+    'dragend',
+    'orderchanged',
+    'swapped',
+  ];
+  eventTypes.forEach(eventType => {
+    draggy.addEventListener(eventType, event => {
+      const {type, detail} = event;
+      const eventDisplay = document.createElement('div');
+      eventDisplay.innerText = stringifyModerate({type, detail}, null, 2);
+      while(events.children.length > 5) {
+        events.children[events.children.length - 1].remove();
+      }
+      if(events.children.length) {
+        events.insertBefore(eventDisplay, events.children[0]);
+      } else {
+        events.appendChild(eventDisplay);
+      }
+    });
+  });
+  </script>
+
+</body>
+</html>

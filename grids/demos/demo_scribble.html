@@ -1,0 +1,108 @@
+<html>
+
+
+
+<head>
+  <meta charset="utf-8"/>
+  <style>
+body {
+  background-color: #444;
+  color: #eee;
+}
+
+.big-canvas {
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 250;
+}
+
+* {
+  touch-action: none;
+  user-select: none;
+}
+.toolbar {
+  border-radius: 1rem;
+  border: 1px #888 solid;
+  background-color: #444;
+  display: inline-block;
+  padding: 0.15rem;
+  line-height: 1.5rem;
+  min-height: 3rem;
+  vertical-align: middle;
+  text-align: middle;
+  z-index: 500;
+}
+.toolbar .tool {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  text-align: center;
+  border-radius: 100%;
+  border: 1px #888 solid;
+  background-color: #444;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  margin: 0rem 0.125rem;
+}
+/* .toolbar select {
+  display: none;
+} */
+.drag-experiment {
+  position: relative;
+}
+.drag-experiment .toolbar {
+  position: relative;
+}
+.toolbar input[type="radio"] {
+  display: none;
+}
+
+input#draw:checked + label.tool[for="draw"], input#symmetry:checked + label.tool[for="symmetry"], input#reflect:checked + label.tool[for="reflect"] {
+  box-shadow: 0.125rem 0.125rem 0.25rem rgba(255, 0, 0, 0.5);
+}
+
+body {
+  margin: 0;
+}
+.other-page-contents {
+  position: relative;
+  margin: 8px 8px 8px 8px;
+  z-index: 2;
+}
+  </style>
+</head>
+<body>
+  <div class="other-page-contents">
+  <header><h2>some text of no consequence</h2></header>
+  <header><h3>some text of no consequence</h3></header>
+  <article class="drag-experiment">
+    <canvas class="big-canvas" width="800" height="600"></canvas>
+    <div class="toolbar">
+      <form>
+
+        <input type="radio" name="tool" id="draw" value="draw" checked="true">
+        <label class="tool" for="draw">✐</label>
+
+        <input type="radio" name="tool" id="symmetry" value="symmetry">
+        <label class="tool" for="symmetry">S</label>
+
+        <input type="checkbox" name="reflect" id="reflect" style="display:none" checked>
+        <label class="tool" for="reflect">🪞</label>
+
+        <label for="rotational">🌸</label>
+        <input type="number" name="rotational" id="rotational" value="6" min="1" max="12">
+        <input type="range" name="filter-delta" id="filter-delta" value="40" min="0" max="100">
+        <input type="range" name="line-width" id="line-width" value="4" min="1" max="15" step="0.1">
+      </form>
+  </article>
+  <script type="module" src="../src/demos/demo_scribble.js"></script>
+  <script type="module">
+
+  </script>
+  </div>
+</body>
+</html>

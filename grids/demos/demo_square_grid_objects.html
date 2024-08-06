@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    canvas {
+      display: inline-block;
+      border: 30px solid black;
+    }
+
+    /* Preventing Flash Of Undefined Custom Elements */
+    body > *{
+      opacity: 0;
+    }
+
+    body {
+      background-color: rgb(64, 64, 64);
+      color: rgb(192,192,192);
+    }
+
+    body.ready > *{
+      opacity: 1;
+      transition: .125s opacity;
+    }
+
+  </style>
+  </head>
+<body>
+  <script type="module">
+    import {Labels} from "../src/labels.js";
+    import {GridSpec} from "../src/grid-spec-ui.js";
+    Labels.install(Labels, window);
+  </script>
+  <div>
+    <!--A spacing input ranging from 15 to 150 in steps of 1, with a corresponding label:-->
+    <label for="spacing">Spacing:</label>
+    <input type="range" id="spacing" min="15" max="150" step="1" value="90">
+    <output for="spacing">90</output>
+  </div>
+  <div>
+    <!--A rotation input ranging from -5 to 365 in steps of 5, with a corresponding label and output:-->
+    <label for="rotation">Rotation:</label>
+    <input type="range" id="rotation" min="-5" max="365" step="1" value="0">
+    <output for="rotation">0</output>
+  </div>
+  <div>
+    <input type="checkbox" id="clear" checked>
+    <label for="clear">Clear when redrawing</label>
+  </div>
+  <div>
+    <input type="checkbox" id="draw-crosshairs" checked>
+    <label for="draw-crosshairs">Draw crosshairs</label>
+  </div>
+  <div>
+    <input type="checkbox" id="draw-grid" checked>
+    <label for="draw-grid">Draw grid</label>
+  </div>
+  <div>
+    <label for="primary-selection">select the</span>
+    <select id="primary-selection">
+      <option value="face">face</option>
+      <option value="vertex">vertex</option>
+      <option selected value="edge">edge</option>
+    </select>
+  </div>
+  <div>
+    <label for="secondary-selection">also draw the</label>
+    <select id="secondary-selection">
+      <option data-show-for-vertex data-show-for-edge data-show-for-face value="nothing">nothing</option>
+      <option data-show-for-face data-show-for-edge value="vertices">vertices</option>
+      <option data-show-for-face data-show-for-vertex value="edges">edges</option>
+      <option data-show-for-edge data-show-for-vertex value="faces">faces</option>
+      <option data-show-for-vertex value="adjacent-vertices">adjacent vertices</option>
+      <option selected data-show-for-edge value="adjacent-edges">adjacent edges</option>
+      <option data-show-for-face value="adjacent-faces">adjacent faces</option>
+    </select>
+    <label for="secondary-selection">of the selection</label>
+  </div>
+  </div>
+  <div>
+    <My-Labels id="my-labels"></My-Labels>
+    <div>
+      <canvas id="canvas" width="750" height="500"></canvas>
+    </div>
+  </div>
+  <script type="module" src="../src/demos/demo_square_grid_objects.js">
+  </script>
+  <script type="module">
+    import {setGlobalLabels} from "../src/labels.js";
+   // Preventing Flash Of Undefined Custom Elements
+    Promise.allSettled([
+    customElements.whenDefined('my-labels'),
+  ]).then(() => document.body.classList.add('ready')).then(() => setGlobalLabels(document.querySelector("my-labels")));
+  </script>
+
+</body>
+</html>

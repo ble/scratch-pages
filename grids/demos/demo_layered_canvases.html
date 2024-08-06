@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+    /* Preventing Flash Of Undefined Custom Elements */
+    body {
+      opacity: 0;
+      background-color: rgb(64, 64, 64);
+    }
+
+    body.ready {
+      opacity: 1;
+      transition: .125s opacity;
+    }
+
+    canvas {
+      border: 5px solid black;
+    }
+  </style>
+  </head>
+<body>
+  <script type="module">
+    import {Labels} from "../src/labels.js";
+    import {GridSpec} from "../src/grid-spec-ui.js";
+    import {LayeredCanvases} from "../src/layered_canvases.js";
+    import {Draggy} from "../src/draggy.js";
+    Labels.install(Labels, window);
+    LayeredCanvases.install(LayeredCanvases, window);
+    Draggy.install(Draggy, window);
+  </script>
+  <div style="display:flex; flex-direction: row;">
+    <draggy-list>
+    </draggy-list>
+    <div>
+      <layered-canvases width="640" height="480"></layered-canvases>
+    </div>
+  </div>
+  <script type="module" src="../src/demos/demo_layered_canvases.js">
+  </script>
+  <script> // Preventing Flash Of Undefined Custom Elements
+    Promise.allSettled([
+    customElements.whenDefined('my-labels'),
+    customElements.whenDefined('layered-canvases'),
+    customElements.whenDefined('draggy-list'),
+  ]).then(() => document.body.classList.add('ready'));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    canvas {
+      display: inline-block;
+      border: 30px solid black;
+    }
+  </style>
+  </head>
+<body>
+  <div>
+    <input type="checkbox" id="face-center" checked>
+    <label for="face-center">Face center at origin</label>
+  </div>
+  <div>
+    <input type="range" id="spacing" min="15" max="150" value="90" step="1">
+    <label for="spacing">Spacing:</label>
+    <output for="spacing" id="spacing-output">90</output>
+  </div>
+  <div>
+    <input type="range" id="pointing" min="-15" max="375" value="45" step="5">
+    <label for="pointing">Pointing:</label>
+    <output for="pointing" id="pointing-output">50</output>
+  </div>
+  <div>
+    <input type="checkbox" id="clear" checked>
+    <label for="clear">Clear when redrawing</label>
+  </div>
+  <script type="module">
+    import {Labels} from "../src/labels.js";
+    Labels.install(Labels, window);
+  </script>
+  <My-Labels id="my-labels"></My-Labels>
+  <div style="float: left">
+    <canvas id="canvas" width="750" height="500"></canvas>
+  </div>
+  <script type="module" src="../src/demos/demo_triangle_grid_kernel.js">
+  </script>
+
+</body>
+</html>

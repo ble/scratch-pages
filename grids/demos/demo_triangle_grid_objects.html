@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    canvas {
+      display: inline-block;
+      border: 30px solid black;
+    }
+
+    /* Preventing Flash Of Undefined Custom Elements */
+    body > *{
+      opacity: 0;
+    }
+
+    body {
+      background-color: rgb(64, 64, 64);
+      color: rgb(192,192,192);
+    }
+
+    body.ready > *{
+      opacity: 1;
+      transition: .125s opacity;
+    }
+
+  </style>
+  </head>
+<body>
+  <script type="module">
+    import {Labels} from "../src/labels.js";
+    import {GridSpec} from "../src/grid-spec-ui.js";
+    Labels.install(Labels, window);
+    GridSpec.install(GridSpec, window);
+  </script>
+  <grid-spec></grid-spec>
+  <div>
+    <input type="checkbox" id="clear" checked>
+    <label for="clear">Clear when redrawing</label>
+  </div>
+  <div>
+    <input type="checkbox" id="draw-crosshairs" checked>
+    <label for="draw-crosshairs">Draw crosshairs</label>
+  </div>
+  <div>
+    <input type="checkbox" id="draw-grid" checked>
+    <label for="draw-grid">Draw grid</label>
+  </div>
+  <div>
+    <label for="nearest-mouse">select the</span>
+    <select id="nearest-mouse">
+      <option value="face">face</option>
+      <option value="vertex">vertex</option>
+      <option value="edge">edge</option>
+    </select>
+  </div>
+  <div>
+    <label for="touching-or-adjacent">also draw the</label>
+    <select id="touching-or-adjacent">
+      <option data-show-for-vertex data-show-for-edge data-show-for-face value="nothing">nothing</option>
+      <option data-show-for-face data-show-for-edge value="vertices">vertices</option>
+      <option data-show-for-face data-show-for-vertex value="edges">edges</option>
+      <option data-show-for-edge data-show-for-vertex value="faces">faces</option>
+      <option data-show-for-vertex value="adjacent-vertices">adjacent vertices</option>
+      <option data-show-for-edge value="adjacent-edges">adjacent edges</option>
+      <option data-show-for-face value="adjacent-faces">adjacent faces</option>
+    </select>
+    <label for="touching-or-adjacent">of the selection</label>
+  </div>
+  </div>
+  <div>
+    <My-Labels id="my-labels"></My-Labels>
+    <div>
+      <canvas id="canvas" width="750" height="500"></canvas>
+    </div>
+  </div>
+  <script type="module" src="../src/demos/demo_triangle_grid_objects.js">
+  </script>
+  <script> // Preventing Flash Of Undefined Custom Elements
+    Promise.allSettled([
+    customElements.whenDefined('my-labels'),
+    customElements.whenDefined('grid-spec')
+  ]).then(() => document.body.classList.add('ready'));
+  </script>
+
+</body>
+</html>
